@@ -1,0 +1,1597 @@
+﻿<mah:MetroWindow
+    x:Class="ProjectGameStore.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dxa="http://schemas.devexpress.com/winfx/2008/xaml/accordion"
+    xmlns:dxdiagi="http://schemas.devexpress.com/winfx/2008/xaml/diagram/internal"
+    xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
+    xmlns:dxrud="http://schemas.devexpress.com/winfx/2008/xaml/reports/userdesigner"
+    xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
+    xmlns:hc="https://handyorg.github.io/handycontrol"
+    xmlns:local="clr-namespace:ProjectGameStore"
+    xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+    xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    
+    Title="База Данных"
+    Width="1100"
+    Height="750"
+    AllowsTransparency="True"
+    Background="Transparent"
+    Loaded="Window_Loaded"
+    MouseDown="Window_MouseDown"
+    ResizeMode="CanResize"
+    WindowStyle="None"
+    mc:Ignorable="d">
+    <mah:MetroWindow.Resources>
+
+        <CollectionViewSource x:Key="gamesViewSource" />
+
+        <Style x:Key="CustomButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="FontFamily" Value="Helvetica" />
+            <Setter Property="Foreground" Value="#2596be" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border
+                            x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="#2596be"
+                            BorderThickness="2"
+                            CornerRadius="8">
+                            <ContentPresenter
+                                x:Name="contentPresenter"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Content="{TemplateBinding Content}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <EventTrigger RoutedEvent="UIElement.MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation
+                                            Storyboard.TargetName="border"
+                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                            To="#2596be"
+                                            Duration="0:0:0.3" />
+                                        <ColorAnimation
+                                            Storyboard.TargetName="contentPresenter"
+                                            Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)"
+                                            To="White"
+                                            Duration="0:0:0.3" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="UIElement.MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation
+                                            Storyboard.TargetName="border"
+                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                            To="Transparent"
+                                            Duration="0:0:0.3" />
+                                        <ColorAnimation
+                                            Storyboard.TargetName="contentPresenter"
+                                            Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)"
+                                            To="#2596be"
+                                            Duration="0:0:0.3" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+
+
+        <Style
+            x:Key="ColumnHeaderStyle"
+            BasedOn="{StaticResource {x:Type DataGridColumnHeader}}"
+            TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
+                        <Border Background="#FF363636" CornerRadius="5">
+                            <ContentPresenter
+                                Margin="10,0,10,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Margin" Value="0,0,0,5" />
+
+        </Style>
+
+
+        <Style
+            x:Key="MyButtonStyle"
+            BasedOn="{StaticResource MahApps.Styles.Button}"
+            TargetType="{x:Type Button}">
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Black}" />
+            <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Accent}" />
+            <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Black}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border
+                            x:Name="PART_Border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter
+                                x:Name="PART_ContentPresenter"
+                                Margin="{TemplateBinding Padding}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Content="{TemplateBinding Content}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                RecognizesAccessKey="True" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="PART_Border" Property="BorderThickness" Value="0" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CustomDataGridRowStyle" TargetType="{x:Type DataGridRow}">
+
+
+            <Setter Property="Height" Value="15" />
+        </Style>
+
+        <Style
+            x:Key="CustomCellStyle"
+            BasedOn="{StaticResource MahApps.Styles.DataGridCell}"
+            TargetType="{x:Type DataGridCell}">
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+
+
+
+        <Style x:Key="TextBoxStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="Background" Value="#FFF0F0F0" />
+            <Setter Property="BorderBrush" Value="#FF515151" />
+            <Setter Property="Foreground" Value="#FF2D2D2D" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="2" />
+            <Setter Property="FontSize" Value="15" />
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border
+                            x:Name="border"
+                            Padding="{TemplateBinding Padding}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="5">
+                            <ScrollViewer
+                                x:Name="PART_ContentHost"
+                                Focusable="false"
+                                HorizontalScrollBarVisibility="Hidden"
+                                VerticalScrollBarVisibility="Hidden" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter TargetName="border" Property="Opacity" Value="0.56" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#FF007ACC" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="true">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#FF007ACC" />
+                                <Setter Property="Background" Value="#cee3eb" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style
+            x:Key="ComboboxBlueCustom"
+            BasedOn="{StaticResource MahApps.Styles.ComboBox}"
+            TargetType="{x:Type ComboBox}">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                    <Setter Property="BorderThickness" Value="0" />
+
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                    <Setter Property="BorderThickness" Value="0" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <CollectionViewSource x:Key="purchasesViewSource" d:DesignSource="{d:DesignInstance {x:Type local:Purchases}}" />
+        <CollectionViewSource x:Key="purchasesViewSource1" d:DesignSource="{d:DesignInstance {x:Type local:Purchases}}" />
+        <CollectionViewSource x:Key="purchasesViewSource2" d:DesignSource="{d:DesignInstance {x:Type local:Purchases}}" />
+        <CollectionViewSource x:Key="purchasesViewSource3" d:DesignSource="{d:DesignInstance {x:Type local:Purchases}}" />
+        <CollectionViewSource x:Key="dataBaseUsersViewSource" d:DesignSource="{d:DesignInstance {x:Type local:DataBaseUsers}}" />
+
+
+
+
+
+
+
+
+
+
+    </mah:MetroWindow.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions />
+
+        <Grid Grid.ColumnSpan="2" DataContext="{StaticResource gamesViewSource}">
+
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="17*" />
+                <RowDefinition Height="1*" />
+
+
+
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="15*" />
+                <ColumnDefinition Width="15*" />
+                <ColumnDefinition Width="1*" />
+
+            </Grid.ColumnDefinitions>
+
+
+
+
+
+
+            <Border
+                Grid.RowSpan="4"
+                Grid.ColumnSpan="5"
+                CornerRadius="0"
+                MouseDown="Window_MouseDown">
+                <Border.Background>
+                    <LinearGradientBrush>
+                        <GradientStop Offset="-0.2" Color="#fafafa" />
+                        <GradientStop Offset="1.3" Color="#b8b8b8" />
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+
+
+            <TabControl
+                Grid.Row="0"
+                Grid.RowSpan="3"
+                Grid.Column="1"
+                Grid.ColumnSpan="2"
+                Margin="0,10,0,0"
+                Background="Transparent"
+                FontFamily="Helvetica"
+                Style="{DynamicResource MahApps.Styles.TabControl.AnimatedSingleRow}">
+                <TabItem
+                    x:Name="Games"
+                    FontFamily="Helvetica"
+                    Header="Игры">
+                    <Grid Margin="0,10,0,0" Background="Transparent">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="15*" />
+                            
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Border
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Background="#2596be"
+                            BorderBrush="#2596be"
+                            CornerRadius="15">
+                            <StackPanel VerticalAlignment="Center">
+                                <Grid>
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="10*" />
+                                        <ColumnDefinition Width="5*" />
+                                        <ColumnDefinition Width="7*" />
+                                        <ColumnDefinition Width="6*" />
+                                        <ColumnDefinition Width="2*" />
+                                    </Grid.ColumnDefinitions>
+
+
+                                    <Button
+                                        x:Name="Filter"
+                                        Grid.Column="1"
+                                        Background="Transparent"
+                                        BorderBrush="Transparent"
+                                        BorderThickness="0"
+                                        Click="Filter_Click"
+                                        Style="{StaticResource MyButtonStyle}">
+                                        <Image Width="25" Source="img/filter-icon.png" />
+
+                                    </Button>
+                                    <Popup
+                                        x:Name="filterPopup"
+                                        IsOpen="True"
+                                        PlacementTarget="{Binding ElementName=Filter}"
+                                        StaysOpen="False">
+                                        <Border
+                                            Padding="5"
+                                            Background="#f0f0f0"
+                                            BorderBrush="#f0f0f0"
+                                            BorderThickness="1">
+                                            <StackPanel>
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                    </Grid.RowDefinitions>
+
+                                                    <StackPanel
+                                                        x:Name="stackPanelPriceFilter"
+                                                        Grid.Row="0"
+                                                        Margin="10,0,10,0">
+                                                        <Grid>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="Auto" />
+                                                                <RowDefinition Height="Auto" />
+                                                                <RowDefinition Height="Auto" />
+                                                                <RowDefinition Height="Auto" />
+                                                                <RowDefinition Height="Auto" />
+
+                                                            </Grid.RowDefinitions>
+
+                                                            <CheckBox
+                                                                x:Name="IsEnabledPrice"
+                                                                Grid.Row="0"
+                                                                Margin="0,10,0,0"
+                                                                Checked="IsEnabledPrice_Checked"
+                                                                Content="Фильтр цены"
+                                                                FontSize="10"
+                                                                Unchecked="IsEnabledPrice_Unchecked" />
+                                                            <TextBlock
+                                                                x:Name="priceLabelFilterPopup"
+                                                                Grid.Row="1"
+                                                                Margin="0,5,0,10"
+                                                                HorizontalAlignment="Left"
+                                                                FontSize="16"
+                                                                FontWeight="Bold"
+                                                                Foreground="#616161"
+                                                                Text="Цена" />
+                                                            <TextBlock
+                                                                x:Name="PriceValueFilter"
+                                                                Grid.Row="1"
+                                                                Margin="0,5,0,10"
+                                                                HorizontalAlignment="Right"
+                                                                FontSize="14"
+                                                                FontWeight="Light"
+                                                                Text="0" />
+
+                                                            <Slider
+                                                                x:Name="PriceFilterSlider"
+                                                                Grid.Row="2"
+                                                                Width="200px"
+                                                                Margin="5,0,5,0"
+                                                                IsEnabled="False"
+                                                                Maximum="100"
+                                                                Minimum="0"
+                                                                ValueChanged="PriceFilterSlider_ValueChanged" />
+                                                            <TextBlock
+                                                                Grid.Row="3"
+                                                                Margin="0,-2,0,0"
+                                                                HorizontalAlignment="Left"
+                                                                FontSize="10"
+                                                                Foreground="Gray"
+                                                                Text="0" />
+                                                            <TextBlock
+                                                                Grid.Row="3"
+                                                                Margin="0,-2,0,0"
+                                                                HorizontalAlignment="Right"
+                                                                FontSize="10"
+                                                                Foreground="Gray"
+                                                                Text="100" />
+                                                            <CheckBox
+                                                                x:Name="IsCloserValuePriceCheck"
+                                                                Grid.Row="4"
+                                                                Margin="0,10,0,0"
+                                                                Content="Приблизительные значения"
+                                                                FontSize="10"
+                                                                IsEnabled="False" />
+                                                        </Grid>
+                                                    </StackPanel>
+
+
+                                                    <StackPanel
+                                                        x:Name="stackPanelReleaseYearFilter"
+                                                        Grid.Row="1"
+                                                        Margin="10,0,10,0">
+                                                        <Grid>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="Auto" />
+                                                                <RowDefinition Height="Auto" />
+                                                                <RowDefinition Height="Auto" />
+                                                                <RowDefinition Height="Auto" />
+
+                                                            </Grid.RowDefinitions>
+
+                                                            <CheckBox
+                                                                x:Name="IsEnabledReleaseYear"
+                                                                Grid.Row="0"
+                                                                Margin="0,20,0,0"
+                                                                Checked="IsEnabledReleaseYear_Checked"
+                                                                Content="Фильтр цены"
+                                                                FontSize="10"
+                                                                Unchecked="IsEnabledReleaseYear_Unchecked" />
+                                                            <TextBlock
+                                                                x:Name="releaseYearLabelFilterPopup"
+                                                                Grid.Row="1"
+                                                                Margin="0,3,0,0"
+                                                                FontSize="16"
+                                                                FontWeight="Bold"
+                                                                Foreground="#616161"
+                                                                Text="Год" />
+                                                            <TextBlock
+                                                                x:Name="ReleaseYearValueFilter"
+                                                                Grid.Row="1"
+                                                                Margin="0,20,0,0"
+                                                                HorizontalAlignment="Right"
+                                                                FontSize="14"
+                                                                FontWeight="Light"
+                                                                Text="2011" />
+
+
+                                                            <Slider
+                                                                x:Name="ReleaseYearFilterSlider"
+                                                                Grid.Row="2"
+                                                                Width="200px"
+                                                                IsEnabled="False"
+                                                                IsSnapToTickEnabled="True"
+                                                                Maximum="2022"
+                                                                Minimum="2011"
+                                                                TickFrequency="1"
+                                                                ValueChanged="ReleaseYearFilterSlider_ValueChanged" />
+                                                            <TextBlock
+                                                                Grid.Row="3"
+                                                                Margin="0,-2,0,0"
+                                                                HorizontalAlignment="Left"
+                                                                FontSize="10"
+                                                                Foreground="Gray"
+                                                                Text="2011" />
+                                                            <TextBlock
+                                                                Grid.Row="3"
+                                                                Margin="0,-2,0,0"
+                                                                HorizontalAlignment="Right"
+                                                                FontSize="10"
+                                                                Foreground="Gray"
+                                                                Text="2022" />
+                                                            <CheckBox
+                                                                x:Name="IsCloserValueReleaseYearCheck"
+                                                                Grid.Row="4"
+                                                                Margin="0,10,0,0"
+                                                                Content="Приблизительные значения"
+                                                                FontSize="10"
+                                                                IsEnabled="False" />
+
+                                                        </Grid>
+                                                    </StackPanel>
+
+                                                    <Button
+                                                        x:Name="ApplyFilterButton"
+                                                        Grid.Row="2"
+                                                        Width="200"
+                                                        Margin="0,10,0,5"
+                                                        Padding="0"
+                                                        hc:BorderElement.CornerRadius="15"
+                                                        Click="ApplyFilterButton_Click"
+                                                        Content="Применить"
+                                                        FontSize="17"
+                                                        Style="{StaticResource ButtonPrimary}" />
+                                                    <Button
+                                                        x:Name="CancelFilterButton"
+                                                        Grid.Row="3"
+                                                        Width="200"
+                                                        Margin="5"
+                                                        Padding="0"
+                                                        hc:BorderElement.CornerRadius="15"
+                                                        Click="CancelFilterButton_Click"
+                                                        Content="Отменить"
+                                                        FontSize="17" />
+
+
+
+                                                </Grid>
+                                            </StackPanel>
+                                        </Border>
+                                    </Popup>
+
+                                    <Border
+                                        Grid.Column="2"
+                                        Height="27"
+                                        Background="#8bb3f2"
+                                        BorderBrush="Transparent"
+                                        BorderThickness="0"
+                                        CornerRadius="15">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image
+                                                Width="20"
+                                                Margin="10,0,20,0"
+                                                Source="/img/search.png" />
+                                            <TextBox
+                                                x:Name="gamesSearchBox"
+                                                Width="237"
+                                                Height="10"
+                                                Background="Transparent"
+                                                BorderThickness="0"
+                                                FontSize="15"
+                                                FontWeight="Bold"
+                                                Foreground="White"
+                                                TextChanged="SearchBox_TextChanged" />
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border
+                                        Grid.Column="3"
+                                        Height="27"
+                                        Margin="10,0,0,0"
+                                        Background="#8bb3f2"
+                                        BorderBrush="Transparent"
+                                        BorderThickness="0"
+                                        CornerRadius="15">
+                                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+
+
+                                            <ComboBox
+                                                x:Name="gamesSearchComboBox"
+                                                Width="120"
+                                                Style="{StaticResource ComboboxBlueCustom}">
+
+                                                <ComboBoxItem Content="Название" />
+                                                <ComboBoxItem Content="Жанр" />
+                                                <ComboBoxItem Content="Разработчик" />
+                                                <ComboBoxItem Content="Издатель" />
+
+                                            </ComboBox>
+                                        </StackPanel>
+
+
+
+
+                                    </Border>
+
+                                    <Button
+                                        x:Name="gamesReset"
+                                        Grid.Column="5"
+                                        HorizontalAlignment="Right"
+                                        Background="Transparent"
+                                        BorderBrush="Transparent"
+                                        BorderThickness="0"
+                                        Click="gamesReset_Click"
+                                        Style="{StaticResource MyButtonStyle}">
+                                        <Image Width="25" Source="/img/reset.png" />
+
+                                    </Button>
+
+                                    <Button
+                                        x:Name="Exit"
+                                        Grid.Column="6"
+                                        Margin="0,0,10,0"
+                                        HorizontalAlignment="Right"
+                                        Background="Transparent"
+                                        BorderBrush="Transparent"
+                                        BorderThickness="0"
+                                        Click="Exit_Click"
+                                        Style="{StaticResource MyButtonStyle}">
+                                        <Image Width="25" Source="img/logout.png" />
+
+                                    </Button>
+
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+
+
+                        <Border
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="1"
+                            Margin="0,10,0,0"
+                            Padding="8"
+                            Background="#e6e6e6"
+                            CornerRadius="15">
+
+                            <DataGrid
+                                x:Name="gamesDataGrid"
+                                Padding="10"
+                                AutoGenerateColumns="False"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                ColumnHeaderStyle="{DynamicResource ColumnHeaderStyle}"
+                                EnableRowVirtualization="True"
+                                FontFamily="Helvetica"
+                                FontSize="15"
+                                IsReadOnly="True"
+                                ItemsSource="{Binding Source={StaticResource gamesViewSource}}"
+                                Opacity="1"
+                                RowDetailsVisibilityMode="VisibleWhenSelected"
+                                RowHeight="35"
+                                SelectionChanged="gamesDataGrid_SelectionChanged">
+
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn
+                                        x:Name="gameIDColumn"
+                                        Width="Auto"
+                                        Binding="{Binding GameID}"
+                                        Header="ID" />
+                                    <DataGridTextColumn
+                                        x:Name="titleColumn"
+                                        Width="Auto"
+                                        Binding="{Binding Title}"
+                                        Header="Название" />
+                                    <DataGridTextColumn
+                                        x:Name="developerColumn"
+                                        Width="Auto"
+                                        Binding="{Binding Developer}"
+                                        Header="Разработчик" />
+                                    <DataGridTextColumn
+                                        x:Name="genreColumn"
+                                        Width="Auto"
+                                        Binding="{Binding Genre}"
+                                        Header="Жанр" />
+                                    <DataGridTextColumn
+                                        x:Name="priceColumn"
+                                        Width="Auto"
+                                        Binding="{Binding Price}"
+                                        Header="Цена" />
+                                    <DataGridTextColumn
+                                        x:Name="publisherColumn"
+                                        Width="Auto"
+                                        Binding="{Binding Publisher}"
+                                        Header="Издатель" />
+                                    <DataGridTextColumn
+                                        x:Name="releaseYearColumn"
+                                        Width="Auto"
+                                        Binding="{Binding ReleaseYear}"
+                                        Header="Год выпуска" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Border>
+                        <Grid Grid.Row="1" Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="6*" />
+                                <RowDefinition Height="5*" />
+                            </Grid.RowDefinitions>
+
+
+                            <Border
+                                Margin="10,10,5,0"
+                                Padding="0"
+                                Background="#e6e6e6"
+                                BorderThickness="0"
+                                CornerRadius="15">
+                                <Grid
+                                    x:Name="grid1"
+                                    Grid.Row="0"
+                                    Width="290"
+                                   
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    DataContext="{StaticResource gamesViewSource}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="12*" />
+                                        <ColumnDefinition Width="18*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="40" />
+                                        <RowDefinition Height="40" />
+                                        <RowDefinition Height="40" />
+                                        <RowDefinition Height="40" />
+                                        <RowDefinition Height="40" />
+                                        <RowDefinition Height="40" />
+                                        <RowDefinition Height="40" />
+                                       
+                                    </Grid.RowDefinitions>
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Margin="3"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Content="Разработчик:"
+                                        FontSize="15"
+                                        FontWeight="Light"
+                                        Style="{DynamicResource MahApps.Styles.Label}" />
+                                    <TextBox
+                                        x:Name="gamesDeveloperTextBox"
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Width="165"
+                                        Height="NaN"
+                                        Margin="3"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource TextBoxExtend}"
+                                        Text="{Binding Developer, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+                                        ToolTip="Разраб" />
+                                    <Label
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Margin="3"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Content="ID"
+                                        FontSize="15"
+                                        FontWeight="Light"
+                                        Style="{DynamicResource MahApps.Styles.Label}" />
+                                    <TextBox
+                                        x:Name="gamesIDTextBox"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Width="165"
+                                        Height="NaN"
+                                        Margin="3"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        IsReadOnly="True"
+                                        IsReadOnlyCaretVisible="True"
+                                        Style="{StaticResource TextBoxExtend}"
+                                        Text="{Binding GameID, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" />
+                                    <Label
+                                        Grid.Row="2"
+                                        Grid.Column="0"
+                                        Margin="3"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Content="Жанр"
+                                        FontSize="15"
+                                        FontWeight="Light"
+                                        Style="{DynamicResource MahApps.Styles.Label}" />
+                                    <TextBox
+                                        x:Name="gamesGenreTextBox"
+                                        Grid.Row="2"
+                                        Grid.Column="1"
+                                        Width="165"
+                                        Height="NaN"
+                                        Margin="3"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        PreviewTextInput="gamesGenreTextBox_PreviewTextInput"
+                                        Style="{StaticResource TextBoxExtend}"
+                                        Text="{Binding Genre, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" />
+                                    <Label
+                                        Grid.Row="3"
+                                        Grid.Column="0"
+                                        Margin="3"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Content="Цена"
+                                        FontSize="15"
+                                        FontWeight="Light"
+                                        Style="{DynamicResource MahApps.Styles.Label}" />
+                                    <TextBox
+                                        x:Name="gamesPriceTextBox"
+                                        Grid.Row="3"
+                                        Grid.Column="1"
+                                        Width="165"
+                                        Height="NaN"
+                                        Margin="3"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        PreviewKeyDown="gamesPriceTextBox_PreviewKeyDown"
+                                        PreviewTextInput="gamesPriceTextBox_PreviewTextInput"
+                                        Style="{StaticResource TextBoxExtend}"
+                                        Text="{Binding Price, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+                                        TextInput="gamesPriceTextBox_TextInput" />
+                                    <Label
+                                        Grid.Row="4"
+                                        Grid.Column="0"
+                                        Margin="3"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Content="Издатель"
+                                        FontSize="15"
+                                        FontWeight="Light"
+                                        Style="{DynamicResource MahApps.Styles.Label}" />
+                                    <TextBox
+                                        x:Name="gamesPublisherTextBox"
+                                        Grid.Row="4"
+                                        Grid.Column="1"
+                                        Width="165"
+                                        Height="NaN"
+                                        Margin="3"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        PreviewTextInput="gamesPublisherTextBox_PreviewTextInput"
+                                        Style="{StaticResource TextBoxExtend}"
+                                        Text="{Binding Publisher, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+                                        TextChanged="gamesPublisherTextBox_TextChanged" />
+                                    <Label
+                                        Grid.Row="5"
+                                        Grid.Column="0"
+                                        Margin="3"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Content="Год выпуска"
+                                        FontSize="15"
+                                        FontWeight="Light"
+                                        Style="{DynamicResource MahApps.Styles.Label}" />
+                                    <TextBox
+                                        x:Name="gamesReleaseYearTextBox"
+                                        Grid.Row="5"
+                                        Grid.Column="1"
+                                        Width="165"
+                                        Height="NaN"
+                                        Margin="3"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource TextBoxExtend}"
+                                        Text="{Binding ReleaseYear, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" />
+                                    <Label
+                                        Grid.Row="6"
+                                        Grid.Column="0"
+                                        Margin="3"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Content="Название"
+                                        FontSize="15"
+                                        FontWeight="Light"
+                                        Style="{DynamicResource MahApps.Styles.Label}" />
+                                    <TextBox
+                                        x:Name="gamesTitleTextBox"
+                                        Grid.Row="6"
+                                        Grid.Column="1"
+                                        Width="165"
+                                        Height="NaN"
+                                        Margin="3"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        PreviewTextInput="gamesTitleTextBox_PreviewTextInput"
+                                        Style="{StaticResource TextBoxExtend}"
+                                        Text="{Binding Title, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" />
+                                </Grid>
+                            </Border>
+
+
+                            <Grid Grid.Row="1" Margin="10 10 0 0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                   
+                                </Grid.RowDefinitions>
+
+                                <Button
+                                    x:Name="SaveButton"
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="8"
+                                    Click="SaveButton_Click"
+                                    Content="Сохранить"
+                                    FontSize="15"
+                                    Style="{StaticResource CustomButtonStyle}" />
+
+                                <Button
+                                    x:Name="DeleteButton"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="8"
+                                    Click="DeleteButton_Click"
+                                    Content="Удалить"
+                                    FontSize="15"
+                                    Style="{StaticResource CustomButtonStyle}" />
+                                <Button
+                                    x:Name="AddNewButton"
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Margin="8"
+                                    Click="AddNewButton_Click"
+                                    Content="Новая запись"
+                                    FontSize="15"
+                                    Style="{StaticResource CustomButtonStyle}" />
+
+
+                                <Button
+                                    x:Name="StatisticButton"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="8"
+                                    Click="StatisticButton_Click"
+                                    Content="Общая статистика"
+                                    FontSize="15"
+                                    Style="{StaticResource CustomButtonStyle}" />
+
+                                <Button
+                                    x:Name="ResultsButton"
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    Margin="8"
+                                    Click="ResultsButton_Click"
+                                    Content="Итоги"
+                                    FontSize="15"
+                                    Style="{StaticResource CustomButtonStyle}" />
+
+
+                                <Button
+                                    x:Name="AverageButton"
+                                    Grid.Row="2"
+                                    Grid.Column="0"
+                                    Margin="8"
+                                    Click="AverageButton_Click"
+                                    Content="Среднее"
+                                    FontSize="15"
+                                    Style="{StaticResource CustomButtonStyle}" />
+
+
+                                <Button
+                                    x:Name="MinimumButton"
+                                    Grid.Row="3"
+                                    Grid.Column="0"
+                                    Margin="8"
+                                    Click="MinimumButton_Click"
+                                    Content="Минимум"
+                                    FontSize="15"
+                                    Style="{StaticResource CustomButtonStyle}" />
+
+
+                                <Button
+                                    x:Name="MaximumButton"
+                                    Grid.Row="3"
+                                    Grid.Column="1"
+                                    Margin="8"
+                                    Click="MaximumButton_Click"
+                                    Content="Максимум"
+                                    FontSize="15"
+                                    Style="{StaticResource CustomButtonStyle}" />
+
+
+                                
+                            </Grid>
+
+
+
+
+
+
+
+
+                        </Grid>
+
+                    </Grid>
+                </TabItem>
+                <TabItem
+                    x:Name="adminPanelTabItem"
+                    Margin="0,-1,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    FontFamily="Helvetica"
+                    Header="Админ-панель"
+                    KeyDown="TabItem_KeyDown"
+                    Visibility="Visible">
+
+                    <Grid Background="Transparent">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="8*" />
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="7*" />
+
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Border
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Margin="0,0,10,0"
+                            Background="#2596be"
+                            CornerRadius="5 5 0 0">
+                            <Label
+                                HorizontalAlignment="Center"
+                                Content="Пользователи базы данных"
+                                FontFamily="Helvetica"
+                                FontSize="25"
+                                FontWeight="Light"
+                                Foreground="White"
+                                Style="{StaticResource MahApps.Styles.Label}" />
+                        </Border>
+
+                        <Border
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="5,0,5,0"
+                            Background="#2596be"
+                            CornerRadius="5 5 0 0">
+                            <Label
+                                HorizontalAlignment="Center"
+                                Content="Панель управления"
+                                FontFamily="Helvetica"
+                                FontSize="25"
+                                FontWeight="Light"
+                                Foreground="White"
+                                Style="{StaticResource MahApps.Styles.Label}" />
+                        </Border>
+                        <Border
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            Margin="5,0,5,0"
+                            Background="#2596be"
+                            CornerRadius="5 5 0 0">
+                            <Label
+                                HorizontalAlignment="Center"
+                                Content="Данные"
+                                FontFamily="Helvetica"
+                                FontSize="25"
+                                FontWeight="Light"
+                                Foreground="White"
+                                Style="{StaticResource MahApps.Styles.Label}" />
+                        </Border>
+
+
+
+
+
+                        <Border
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="1"
+                            Margin="5,0,5,0"
+                            Padding="8"
+                            Background="#e6e6e6"
+                            CornerRadius="0 0 5 5">
+
+
+
+                            <Grid Grid.Row="1" Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+
+                                <Button
+                                    x:Name="addNewDBUserBtn"
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="10"
+                                    Background="#2596be"
+                                     Style="{StaticResource MahApps.Styles.Button}"
+                                    Click="addNewDBUserBtn_Click">
+
+                                    <Image Width="30" Source="/img/add new user.png" />
+                                </Button>
+
+                                <Button
+                                    x:Name="deleteDBUserBtn"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="10"
+                                    Background="#2596be"
+                                    Click="deleteDBUserBtn_Click"
+                                     Style="{StaticResource MahApps.Styles.Button}">
+                                    <Image Width="30" Source="/img/remove user.png" />
+                                </Button>
+
+
+
+                                <Button
+                                    x:Name="searchDBUserBtn"
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Margin="10"
+                                    Background="#2596be"
+                                    Click="searchDBUserBtn_Click"
+                                     Style="{StaticResource MahApps.Styles.Button}">
+                                    <Image Width="30" Source="/img/find user.png" />
+                                </Button>
+                                <Popup
+                                    x:Name="searchUserPopup"
+                                    IsOpen="False"
+                                    Placement="Left"
+                                    PlacementTarget="{Binding ElementName=searchDBUserBtn}"
+                                    StaysOpen="False">
+
+                                    <Border
+                                        Padding="15"
+                                        BorderBrush="Gray"
+                                        BorderThickness="1"
+                                        CornerRadius="2">
+                                        <Border.Background>
+                                            <LinearGradientBrush>
+                                                <GradientStop Offset="-0.2" Color="#fafafa" />
+                                                <GradientStop Offset="2" Color="#b8b8b8" />
+                                            </LinearGradientBrush>
+                                        </Border.Background>
+                                        <StackPanel>
+                                            <Grid ContextMenuClosing="Grid_ContextMenuClosing">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+
+                                                </Grid.RowDefinitions>
+                                                <Label Grid.Row="0" Content="Найти:" Style="{StaticResource MahApps.Styles.Label}" />
+                                                <TextBox
+                                                    x:Name="searchUserTextBox"
+                                                    Grid.Row="1"
+                                                    Width="150"
+                                                    />
+                                                <Label Grid.Row="2" Content="По полю:" Style="{StaticResource MahApps.Styles.Label}" />
+                                               
+                                                    <ComboBox 
+                                                        Grid.Row="3"
+                                                    Grid.Column="1"
+                                                        x:Name="searchDBUserFieldsComboBox"
+                                                       
+                                                        Foreground="Black"
+                                                      >
+                                                        <ComboBoxItem Content="ID" />
+                                                        <ComboBoxItem Content="Логин" />
+                                                        <ComboBoxItem Content="Роль" />
+                                                    </ComboBox>
+                                          
+
+                                                <Button
+                                                    x:Name="ApplySearchUserButton"
+                                                    Grid.Row="4"
+                                                    Margin="0,10,0,5"
+                                                        Padding="0"
+                                                        hc:BorderElement.CornerRadius="15"
+                                                    Width="150"
+                                                    Click="ApplySearchUserButton_Click"
+                                                    Content="Применить"
+                                                    FontSize="15"
+                                                    
+                                                    Style="{StaticResource ButtonPrimary}" />
+                                                <Button
+                                                    x:Name="CancelSearchUserButton"
+                                                    Grid.Row="5"
+                                                    Margin="0,2,0,5"
+                                                        Padding="0"
+                                                        hc:BorderElement.CornerRadius="15"
+                                                    Width="150"
+                                                    Click="CancelSearchUserButton_Click"
+                                                    Content="Отменить"
+                                                    FontSize="15"
+                                                 />
+
+
+
+
+                                            </Grid>
+                                        </StackPanel>
+                                    </Border>
+                                </Popup>
+
+                                <Button
+                                    x:Name="editDBUserBtn"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="10"
+                                    Background="#2596be"
+                                     Style="{StaticResource MahApps.Styles.Button}"
+                                    Click="editDBUserBtn_Click">
+                                    <Image Width="30" Source="/img/edit.png" />
+                                </Button>
+
+                                <Button
+                                    x:Name="createBackupBtn"
+                                    Grid.Row="2"
+                                    Grid.Column="0"
+                                    Margin="10"
+                                    Background="#2596be"
+                                    Style="{StaticResource MahApps.Styles.Button}"
+                                    Click="createBackupBtn_Click">
+                                    <Image Width="30" Source="img/create backup.png" />
+                                </Button>
+                                <Button
+                                    x:Name="restoreDataBaseBtn"
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    Margin="10"
+                                    Background="#2596be"
+                                    Click="restoreDataBaseBtn_Click"
+                                     Style="{StaticResource MahApps.Styles.Button}">
+                                    <Image Width="30" Source="img/icons8-data-backup-96.png" />
+                                </Button>
+
+
+                            </Grid>
+
+
+                        </Border>
+
+
+                        <Border
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="1"
+                            Margin="0,0,10,0"
+                            Padding="8"
+                            Background="#e6e6e6"
+                            CornerRadius="0 0 5 5">
+
+                            <DataGrid
+                                x:Name="dataBaseUsersDataGrid"
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                AutoGenerateColumns="False"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                ColumnHeaderStyle="{DynamicResource ColumnHeaderStyle}"
+                                ColumnWidth="SizeToCells"
+                                EnableRowVirtualization="True"
+                                FontFamily="Helvetica"
+                                FontSize="15"
+                                IsReadOnly="True"
+                                ItemsSource="{Binding Source={StaticResource dataBaseUsersViewSource}}"
+                                RowDetailsVisibilityMode="VisibleWhenSelected"
+                                RowHeight="35"
+                                SelectionChanged="dataBaseUsersDataGrid_SelectionChanged">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn
+                                        x:Name="userIDColumn"
+                                        Width="50"
+                                        Binding="{Binding UserID}"
+                                        Header="ID " />
+                                    <DataGridTextColumn
+                                        x:Name="usernameColumn"
+                                        Width="SizeToCells"
+                                        Binding="{Binding Username}"
+                                        Header="Логин" />
+                                    <DataGridTextColumn
+                                        x:Name="passwordColumn"
+                                        Width="SizeToCells"
+                                        Binding="{Binding Password}"
+                                        Header="Пароль" />
+                                    <DataGridTextColumn
+                                        x:Name="userRoleColumn"
+                                        Width="SizeToCells"
+                                        Binding="{Binding UserRole}"
+                                        Header="Роль" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Border>
+
+
+
+                        <Border
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            Margin="5,0,5,0"
+                            Padding="8"
+                            Background="#e6e6e6"
+                            CornerRadius="0 0 5 5">
+
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="4*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*" />
+                                    <RowDefinition Height="1*" />
+                                    <RowDefinition Height="1*" />
+                                    <RowDefinition Height="2*" />
+                                </Grid.RowDefinitions>
+
+                                <Label
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="3"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Content="Логин:"
+                                    FontSize="15"
+                                    FontWeight="Light"
+                                    Style="{StaticResource MahApps.Styles.Label}" />
+
+                                <TextBox
+                                    x:Name="loginDBUserTextBox"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Width="120"
+                                    Height="35"
+                                    Margin="3"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    IsReadOnly="True" />
+                                <Label
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Margin="3"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Content="Пароль:"
+                                    FontSize="15"
+                                    FontWeight="Light"
+                                    Style="{StaticResource MahApps.Styles.Label}" />
+
+                                <TextBox
+                                    x:Name="passwordDBUserTextBox"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Width="120"
+                                    Height="35"
+                                    Margin="3"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    IsReadOnly="True" />
+
+
+                                <Label
+                                    Grid.Row="2"
+                                    Grid.Column="0"
+                                    Margin="3"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Content="Роль:"
+                                    FontSize="15"
+                                    FontWeight="Light"
+                                    Style="{StaticResource MahApps.Styles.Label}" />
+
+
+
+
+                                <ComboBox
+                                    x:Name="DbUserRoleComboBox"
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    Width="120"
+                                    Height="35"
+                                    Foreground="Black"
+                                    IsReadOnly="True">
+                                    <ComboBoxItem Content="admin" />
+                                    <ComboBoxItem Content="manager" />
+                                    <ComboBoxItem Content="user" />
+                                </ComboBox>
+
+
+                                <Grid
+                                    Grid.Row="3"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Button
+                                        x:Name="SaveUserDBBtn"
+                                        Grid.Column="1"
+                                        Margin="20"
+                                        Style="{StaticResource ButtonCustom}"
+                                        Background="#2596be"
+                                        Click="SaveUserDBBtn_Click"
+                                        IsEnabled="False">
+                                        <Image Width="25" Source="img/done.png" />
+
+                                    </Button>
+
+                                    <Button
+                                        x:Name="CancelUserDBBtn"
+                                        Grid.Column="0"
+                                        Margin="20"
+                                        Background=" #df4759"
+                                        Style="{StaticResource ButtonCustom}"
+                                        Click="CancelUserDBBtn_Click"
+                                        IsEnabled="False">
+                                        <Image Width="25" Source="img/cancel.png" />
+
+                                    </Button>
+                                </Grid>
+
+
+
+
+                            </Grid>
+
+                        </Border>
+
+                        <Border
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Margin="0,0,10,0"
+                            Background="#2596be"
+                            CornerRadius="5 5 0 0">
+                            <Label
+                                HorizontalAlignment="Center"
+                                Content="Логгер"
+                                FontFamily="Helvetica"
+                                FontSize="25"
+                                FontWeight="Light"
+                                Foreground="White" Style="{StaticResource MahApps.Styles.Label}" />
+                        </Border>
+
+
+                        <Border
+                            Grid.Row="4"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="1"
+                            Margin="0,0,10,0"
+                            Padding="8"
+                            Background="#e6e6e6"
+                            CornerRadius="0 0 5 5">
+                            <RichTextBox
+                                x:Name="Logger"
+                                Background="Transparent"
+                                IsReadOnly="True">
+                                <FlowDocument>
+                                    <Paragraph />
+                                </FlowDocument>
+                            </RichTextBox>
+                        </Border>
+
+
+
+
+
+
+                    </Grid>
+
+
+
+
+
+                </TabItem>
+                <TabItem Header="Отчеты">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="15*" />
+
+                        </Grid.RowDefinitions>
+
+                        <hc:ButtonGroup VerticalAlignment="Center"  >
+                            <RadioButton
+                                Checked="UsersReport_Checked"
+                                Content="Список пользователей"
+                                FontSize="20"
+                                Height="50" 
+                                Style="{DynamicResource RadioGroupItemSingle}" />
+                            <RadioButton
+                                Checked="GamesReport_Checked"
+                                Content="Список игр"
+                                FontSize="20"
+                                Height="50" 
+                                Style="{DynamicResource RadioGroupItemSingle}" />
+                            <RadioButton
+                                Checked="purchasesReport_Checked"
+                                Content="Список покупок"
+                                FontSize="20"
+                               
+                                Height="50" 
+                                Style="{DynamicResource RadioGroupItemSingle}" />
+
+                        </hc:ButtonGroup>
+                        <dxp:DocumentPreviewControl
+                            x:Name="ReportViewer"
+                            Grid.Row="1"
+                            Loaded="ReportViewer_Loaded" />
+                    </Grid>
+                </TabItem>
+
+
+
+                <TabItem Header="Диаграммы" Loaded="DiagramsTabItem_Loaded"  >
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="18*"/>
+                        </Grid.RowDefinitions>
+
+                        <hc:ButtonGroup VerticalAlignment="Center"  >
+                            <RadioButton
+                                Checked="GamesChartsDiagramm_Checked"
+                                Content="Игры"
+                                FontSize="20"
+                                Height="50" 
+                                Style="{DynamicResource RadioGroupItemSingle}" />
+                            <RadioButton
+                                Checked="GamesCountYearDiagramm_Checked"
+                                Content="Годы"
+                                FontSize="20"
+                                Height="50" 
+                                Style="{DynamicResource RadioGroupItemSingle}" />
+                           
+
+                        </hc:ButtonGroup>
+
+
+                        <Border Padding="8"  Grid.Row="1"
+                            Background="White"
+                            CornerRadius=" 0 0 25 25">
+
+                            <lvc:PieChart x:Name="GenresChart"  LegendLocation="Bottom" Hoverable="False" DataTooltip="{x:Null}" />
+
+
+
+
+                        </Border>
+
+
+                        
+                    </Grid>
+                    
+                </TabItem>
+
+            </TabControl>
+
+
+
+
+
+
+        </Grid>
+
+
+    </Grid>
+</mah:MetroWindow>
