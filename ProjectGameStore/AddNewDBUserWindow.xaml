@@ -9,11 +9,13 @@
     Title="AddNewDBUserWindow"
     Width="300"
     Height="200"
-    AllowsTransparency="True"
-    Background="Transparent"
+   
+    Icon="{StaticResource AppIcon}"
     Loaded="Window_Loaded"
     ResizeMode="NoResize"
     WindowStyle="None"
+     AllowsTransparency="True"
+    Background="Transparent"
     mc:Ignorable="d">
 
     <Window.Resources>
@@ -248,7 +250,8 @@
                 Content="Логин:"
                 FontSize="15"
                 FontWeight="Light"
-                Foreground="Black" />
+                Foreground="Black"
+                Style="{StaticResource MahApps.Styles.Label}" />
             <TextBox
                 x:Name="loginDBUserTextBox"
                 Grid.Row="0"
@@ -258,7 +261,6 @@
                 Margin="3"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                Style="{DynamicResource TextBoxStyle}"
                 Text="{Binding Developer, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" />
             <Label
                 Grid.Row="2"
@@ -269,7 +271,8 @@
                 Content="Пароль"
                 FontSize="15"
                 FontWeight="Light"
-                Foreground="Black" />
+                Foreground="Black"
+                Style="{StaticResource MahApps.Styles.Label}" />
             <TextBox
                 x:Name="passwordDBUserTextBox"
                 Grid.Row="2"
@@ -279,7 +282,6 @@
                 Margin="3"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                Style="{DynamicResource TextBoxStyle}"
                 Text="{Binding Genre, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" />
             <Label
                 Grid.Row="3"
@@ -290,29 +292,25 @@
                 Content="Роль"
                 FontSize="15"
                 FontWeight="Light"
-                Foreground="Black" />
-            <Border
+                Foreground="Black"
+                Style="{StaticResource MahApps.Styles.Label}" />
+
+            <ComboBox
+                x:Name="DbUserRoleComboBox"
                 Grid.Row="3"
                 Grid.Column="1"
                 Width="120"
                 Height="30"
                 Margin="3"
-                Background="#FFF0F0F0"
-                BorderBrush="#FF515151"
-                BorderThickness="1"
-                CornerRadius="5">
-                <ComboBox
-                    x:Name="DbUserRoleComboBox"
-                    Foreground="Black"
-                    IsReadOnly="True"
-                    Style="{StaticResource ComboboxBlueCustom}">
-                    <ComboBoxItem Content="admin" />
-                    <ComboBoxItem Content="manager" />
-                    <ComboBoxItem Content="user" />
-                </ComboBox>
-            </Border>
+                Foreground="Black"
+                IsReadOnly="True">
+                <ComboBoxItem Content="admin" />
+                <ComboBoxItem Content="manager" />
+                <ComboBoxItem Content="user" />
+            </ComboBox>
 
-           
+
+
             <Button
                 x:Name="Save"
                 Grid.Row="5"

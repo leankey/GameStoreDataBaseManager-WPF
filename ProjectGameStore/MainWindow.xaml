@@ -12,6 +12,7 @@
     Height="450"
     AllowsTransparency="True"
     Background="Transparent"
+    Icon="{StaticResource AppIcon}"
     ResizeMode="NoResize"
     WindowStyle="None"
     mc:Ignorable="d">
@@ -84,15 +85,15 @@
             <Setter Property="FontSize" Value="15" />
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="FontFamily" Value="Helvetica" />
-            <Setter Property="Foreground" Value="#cc1f28" />
+            <Setter Property="Foreground" Value="Gray" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border
                             x:Name="border"
-                            Background="{TemplateBinding Background}"
+                            Background="Transparent"
                             BorderBrush="#cc1f28"
-                            BorderThickness="2"
+                            BorderThickness="0"
                             CornerRadius="15">
                             <ContentPresenter
                                 x:Name="contentPresenter"
@@ -230,35 +231,36 @@
 
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
 
                     <Button
-                      Grid.Row="0"
-                    x:Name="LoginBtn"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    Click="Button_Click"
-                    FontFamily="Helvetica"
-                    FontSize="20"
-                    Foreground="#2596be"
-                    Style="{StaticResource CustomButtonStyle}">
+                        x:Name="LoginBtn"
+                        Grid.Row="0"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Click="Button_Click"
+                        FontFamily="Helvetica"
+                        FontSize="20"
+                        Foreground="#2596be"
+                        Style="{StaticResource CustomButtonStyle}">
                         Войти
                     </Button>
                     <Button
+                        x:Name="ExitBtn"
+                        Grid.Row="2"
                         Width="90"
-                      Grid.Row="2"
-                        Margin="145,15,145,0"
-                    x:Name="ExitBtn"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    Click="Exit_Click"
-                    FontFamily="Helvetica"
-                    FontSize="15"
-                    
-                    Style="{StaticResource CustomButtonStyleRED}" Height="22" VerticalAlignment="Top">
+                        Height="22"
+                        Margin="145,8,145,0"
+                        VerticalAlignment="Top"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Click="Exit_Click"
+                        FontFamily="Helvetica"
+                        FontSize="15"
+                        Style="{StaticResource CustomButtonStyleRED}">
                         Закрыть
                     </Button>
                 </Grid>
