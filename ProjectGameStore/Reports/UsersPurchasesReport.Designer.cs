@@ -32,13 +32,11 @@
             DevExpress.DataAccess.EntityFramework.EFConnectionParameters efConnectionParameters1 = new DevExpress.DataAccess.EntityFramework.EFConnectionParameters();
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
-            this.ReportHeader = new DevExpress.XtraReports.UI.ReportHeaderBand();
-            this.GroupHeader1 = new DevExpress.XtraReports.UI.GroupHeaderBand();
-            this.Detail = new DevExpress.XtraReports.UI.DetailBand();
-            this.DetailReport = new DevExpress.XtraReports.UI.DetailReportBand();
             this.pageInfo1 = new DevExpress.XtraReports.UI.XRPageInfo();
             this.pageInfo2 = new DevExpress.XtraReports.UI.XRPageInfo();
+            this.ReportHeader = new DevExpress.XtraReports.UI.ReportHeaderBand();
             this.label1 = new DevExpress.XtraReports.UI.XRLabel();
+            this.GroupHeader1 = new DevExpress.XtraReports.UI.GroupHeaderBand();
             this.table1 = new DevExpress.XtraReports.UI.XRTable();
             this.tableRow1 = new DevExpress.XtraReports.UI.XRTableRow();
             this.tableCell1 = new DevExpress.XtraReports.UI.XRTableCell();
@@ -47,15 +45,17 @@
             this.tableCell5 = new DevExpress.XtraReports.UI.XRTableCell();
             this.tableCell3 = new DevExpress.XtraReports.UI.XRTableCell();
             this.tableCell6 = new DevExpress.XtraReports.UI.XRTableCell();
+            this.Detail = new DevExpress.XtraReports.UI.DetailBand();
+            this.DetailReport = new DevExpress.XtraReports.UI.DetailReportBand();
             this.GroupHeader2 = new DevExpress.XtraReports.UI.GroupHeaderBand();
-            this.Detail1 = new DevExpress.XtraReports.UI.DetailBand();
-            this.DetailReport1 = new DevExpress.XtraReports.UI.DetailReportBand();
             this.table2 = new DevExpress.XtraReports.UI.XRTable();
             this.tableRow2 = new DevExpress.XtraReports.UI.XRTableRow();
             this.tableCell7 = new DevExpress.XtraReports.UI.XRTableCell();
             this.tableCell9 = new DevExpress.XtraReports.UI.XRTableCell();
             this.tableCell8 = new DevExpress.XtraReports.UI.XRTableCell();
             this.tableCell10 = new DevExpress.XtraReports.UI.XRTableCell();
+            this.Detail1 = new DevExpress.XtraReports.UI.DetailBand();
+            this.DetailReport1 = new DevExpress.XtraReports.UI.DetailReportBand();
             this.Detail2 = new DevExpress.XtraReports.UI.DetailBand();
             this.efDataSource1 = new DevExpress.DataAccess.EntityFramework.EFDataSource(this.components);
             this.Title = new DevExpress.XtraReports.UI.XRControlStyle();
@@ -80,42 +80,6 @@
             this.pageInfo2});
             this.BottomMargin.Name = "BottomMargin";
             // 
-            // ReportHeader
-            // 
-            this.ReportHeader.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.label1});
-            this.ReportHeader.HeightF = 60F;
-            this.ReportHeader.Name = "ReportHeader";
-            // 
-            // GroupHeader1
-            // 
-            this.GroupHeader1.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.table1});
-            this.GroupHeader1.GroupFields.AddRange(new DevExpress.XtraReports.UI.GroupField[] {
-            new DevExpress.XtraReports.UI.GroupField("Users.Username", DevExpress.XtraReports.UI.XRColumnSortOrder.Ascending),
-            new DevExpress.XtraReports.UI.GroupField("Users.Email", DevExpress.XtraReports.UI.XRColumnSortOrder.Ascending),
-            new DevExpress.XtraReports.UI.GroupField("Users.UserID", DevExpress.XtraReports.UI.XRColumnSortOrder.Ascending)});
-            this.GroupHeader1.GroupUnion = DevExpress.XtraReports.UI.GroupUnion.WithFirstDetail;
-            this.GroupHeader1.HeightF = 27F;
-            this.GroupHeader1.Name = "GroupHeader1";
-            // 
-            // Detail
-            // 
-            this.Detail.HeightF = 0F;
-            this.Detail.KeepTogether = true;
-            this.Detail.Name = "Detail";
-            // 
-            // DetailReport
-            // 
-            this.DetailReport.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
-            this.GroupHeader2,
-            this.Detail1,
-            this.DetailReport1});
-            this.DetailReport.DataMember = "Purchases.Users.Purchases";
-            this.DetailReport.DataSource = this.efDataSource1;
-            this.DetailReport.Level = 0;
-            this.DetailReport.Name = "DetailReport";
-            // 
             // pageInfo1
             // 
             this.pageInfo1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
@@ -133,6 +97,13 @@
             this.pageInfo2.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopRight;
             this.pageInfo2.TextFormatString = "Page {0} of {1}";
             // 
+            // ReportHeader
+            // 
+            this.ReportHeader.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.label1});
+            this.ReportHeader.HeightF = 60F;
+            this.ReportHeader.Name = "ReportHeader";
+            // 
             // label1
             // 
             this.label1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
@@ -140,6 +111,18 @@
             this.label1.SizeF = new System.Drawing.SizeF(650F, 24.19433F);
             this.label1.StyleName = "Title";
             this.label1.Text = "Покупки пользователей";
+            // 
+            // GroupHeader1
+            // 
+            this.GroupHeader1.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.table1});
+            this.GroupHeader1.GroupFields.AddRange(new DevExpress.XtraReports.UI.GroupField[] {
+            new DevExpress.XtraReports.UI.GroupField("Users.Username", DevExpress.XtraReports.UI.XRColumnSortOrder.Ascending),
+            new DevExpress.XtraReports.UI.GroupField("Users.Email", DevExpress.XtraReports.UI.XRColumnSortOrder.Ascending),
+            new DevExpress.XtraReports.UI.GroupField("Users.UserID", DevExpress.XtraReports.UI.XRColumnSortOrder.Ascending)});
+            this.GroupHeader1.GroupUnion = DevExpress.XtraReports.UI.GroupUnion.WithFirstDetail;
+            this.GroupHeader1.HeightF = 27F;
+            this.GroupHeader1.Name = "GroupHeader1";
             // 
             // table1
             // 
@@ -166,7 +149,7 @@
             this.tableCell1.Name = "tableCell1";
             this.tableCell1.StyleName = "GroupCaption1";
             this.tableCell1.Text = "Никнейм";
-            this.tableCell1.Weight = 0.17882069514347956D;
+            this.tableCell1.Weight = 0.13572284455634309D;
             // 
             // tableCell4
             // 
@@ -174,14 +157,14 @@
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[Users.Username]")});
             this.tableCell4.Name = "tableCell4";
             this.tableCell4.StyleName = "GroupData1";
-            this.tableCell4.Weight = 0.17882069514347956D;
+            this.tableCell4.Weight = 0.24755942174614115D;
             // 
             // tableCell2
             // 
             this.tableCell2.Name = "tableCell2";
             this.tableCell2.StyleName = "GroupCaption1";
             this.tableCell2.Text = "Email";
-            this.tableCell2.Weight = 0.13277907151442309D;
+            this.tableCell2.Weight = 0.082779247743179282D;
             // 
             // tableCell5
             // 
@@ -189,14 +172,14 @@
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[Users.Email]")});
             this.tableCell5.Name = "tableCell5";
             this.tableCell5.StyleName = "GroupData1";
-            this.tableCell5.Weight = 0.13277907151442309D;
+            this.tableCell5.Weight = 0.1904713112624582D;
             // 
             // tableCell3
             // 
             this.tableCell3.Name = "tableCell3";
             this.tableCell3.StyleName = "GroupCaption1";
             this.tableCell3.Text = "ID";
-            this.tableCell3.Weight = 0.14944323026216946D;
+            this.tableCell3.Weight = 0.0622637251750241D;
             // 
             // tableCell6
             // 
@@ -204,7 +187,24 @@
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[Users.UserID]")});
             this.tableCell6.Name = "tableCell6";
             this.tableCell6.StyleName = "GroupData1";
-            this.tableCell6.Weight = 0.22735722468449518D;
+            this.tableCell6.Weight = 0.28120338303927428D;
+            // 
+            // Detail
+            // 
+            this.Detail.HeightF = 0F;
+            this.Detail.KeepTogether = true;
+            this.Detail.Name = "Detail";
+            // 
+            // DetailReport
+            // 
+            this.DetailReport.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
+            this.GroupHeader2,
+            this.Detail1,
+            this.DetailReport1});
+            this.DetailReport.DataMember = "Purchases.Users.Purchases";
+            this.DetailReport.DataSource = this.efDataSource1;
+            this.DetailReport.Level = 0;
+            this.DetailReport.Name = "DetailReport";
             // 
             // GroupHeader2
             // 
@@ -216,21 +216,6 @@
             this.GroupHeader2.GroupUnion = DevExpress.XtraReports.UI.GroupUnion.WithFirstDetail;
             this.GroupHeader2.HeightF = 27F;
             this.GroupHeader2.Name = "GroupHeader2";
-            // 
-            // Detail1
-            // 
-            this.Detail1.HeightF = 0F;
-            this.Detail1.KeepTogether = true;
-            this.Detail1.Name = "Detail1";
-            // 
-            // DetailReport1
-            // 
-            this.DetailReport1.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
-            this.Detail2});
-            this.DetailReport1.DataMember = "Purchases.Users.Purchases.Games.Purchases";
-            this.DetailReport1.DataSource = this.efDataSource1;
-            this.DetailReport1.Level = 0;
-            this.DetailReport1.Name = "DetailReport1";
             // 
             // table2
             // 
@@ -254,7 +239,7 @@
             // 
             this.tableCell7.BackColor = System.Drawing.Color.Transparent;
             this.tableCell7.BorderColor = System.Drawing.Color.Transparent;
-            this.tableCell7.Font = new DevExpress.Drawing.DXFont("Arial", 9F);
+            this.tableCell7.Font = new DevExpress.Drawing.DXFont("Arial", 9F, DevExpress.Drawing.DXFontStyle.Bold);
             this.tableCell7.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.tableCell7.Name = "tableCell7";
             this.tableCell7.StyleName = "GroupCaption2";
@@ -286,7 +271,7 @@
             // 
             this.tableCell8.BackColor = System.Drawing.Color.Transparent;
             this.tableCell8.BorderColor = System.Drawing.Color.Transparent;
-            this.tableCell8.Font = new DevExpress.Drawing.DXFont("Arial", 9F);
+            this.tableCell8.Font = new DevExpress.Drawing.DXFont("Arial", 9F, DevExpress.Drawing.DXFontStyle.Bold);
             this.tableCell8.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.tableCell8.Name = "tableCell8";
             this.tableCell8.StyleName = "GroupCaption2";
@@ -312,6 +297,21 @@
             this.tableCell10.StylePriority.UseFont = false;
             this.tableCell10.StylePriority.UseForeColor = false;
             this.tableCell10.Weight = 0.597746347280649D;
+            // 
+            // Detail1
+            // 
+            this.Detail1.HeightF = 0F;
+            this.Detail1.KeepTogether = true;
+            this.Detail1.Name = "Detail1";
+            // 
+            // DetailReport1
+            // 
+            this.DetailReport1.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
+            this.Detail2});
+            this.DetailReport1.DataMember = "Purchases.Users.Purchases.Games.Purchases";
+            this.DetailReport1.DataSource = this.efDataSource1;
+            this.DetailReport1.Level = 0;
+            this.DetailReport1.Name = "DetailReport1";
             // 
             // Detail2
             // 
@@ -392,7 +392,7 @@
             this.PageInfo.Name = "PageInfo";
             this.PageInfo.Padding = new DevExpress.XtraPrinting.PaddingInfo(6, 6, 0, 0, 100F);
             // 
-            // GtaPurchasesReport
+            // UsersPurchasesReport
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
             this.TopMargin,

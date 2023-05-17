@@ -20,11 +20,9 @@ using System.Data;
 using Syncfusion.Linq;
 using DevExpress.Mvvm.Native;
 using ProjectGameStore.Reports;
-using DevExpress.Xpf.Printing;
 using LiveCharts;
 using LiveCharts.Wpf;
-using System.Runtime.Serialization;
-using System.ComponentModel;
+
 
 namespace ProjectGameStore
 {
@@ -194,7 +192,11 @@ namespace ProjectGameStore
                     game.Title = gamesTitleTextBox.Text;
                     game.Developer = gamesDeveloperTextBox.Text;
                     game.Genre = gamesGenreTextBox.Text;
-                    game.Price = decimal.Parse(gamesPriceTextBox.Text, CultureInfo.InvariantCulture);
+                    string priceText = gamesPriceTextBox.Text.Replace(",", ".");
+                    game.Price = decimal.Parse(priceText, NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands, CultureInfo.InvariantCulture);
+
+
+
                     game.Publisher = gamesPublisherTextBox.Text;
                     game.ReleaseYear = int.Parse(gamesReleaseYearTextBox.Text);
                 }
@@ -207,7 +209,7 @@ namespace ProjectGameStore
                         Title = gamesTitleTextBox.Text,
                         Developer = gamesDeveloperTextBox.Text,
                         Genre = gamesGenreTextBox.Text,
-                        Price = decimal.Parse(gamesPriceTextBox.Text),
+                        Price = decimal.Parse(gamesPriceTextBox.Text, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture),
                         Publisher = gamesPublisherTextBox.Text,
                         ReleaseYear = int.Parse(gamesReleaseYearTextBox.Text)
                     };
@@ -215,6 +217,7 @@ namespace ProjectGameStore
                     // Добавляем новую игру в контекст базы данных
                     context.Games.Add(game);
                 }
+
 
 
                 try
@@ -364,37 +367,48 @@ namespace ProjectGameStore
         //Валидация введенной цены для текстбокса gamesPriceTextBox
         private void gamesPriceTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            // Проверка наличия точки в тексте
-            bool hasDot = ((TextBox)sender).Text.Contains(".");
+            // Проверка наличия точки или запятой в тексте
+            bool hasDotOrComma = ((TextBox)sender).Text.Contains(".") || ((TextBox)sender).Text.Contains(",");
 
-            // Если введенный символ не является цифрой или точкой, отменяем его ввод
-            if (!char.IsDigit(e.Text, 0) && e.Text != "." && e.Text!=","|| (e.Text == "." && hasDot))
+            // Если введенный символ не является цифрой, точкой или запятой, отменяем его ввод
+            if (!char.IsDigit(e.Text, 0) && e.Text != "." && e.Text != ",")
             {
                 e.Handled = true;
                 return;
             }
 
-            // Если введена точка и в тексте уже есть точка, отменяем ее ввод
-            if (e.Text == "." && hasDot)
+            // Если введена точка или запятая и в тексте уже есть точка или запятая, отменяем ее ввод
+            if ((e.Text == "." || e.Text == ",") && hasDotOrComma)
             {
                 e.Handled = true;
                 return;
             }
 
-            // Если введена точка и она является первым символом в тексте, отменяем ее ввод
-            if (e.Text == "." && ((TextBox)sender).Text.Length == 0)
+            // Если введена точка или запятая и она является первым символом в тексте, отменяем ее ввод
+            if ((e.Text == "." || e.Text == ",") && ((TextBox)sender).Text.Length == 0)
             {
                 e.Handled = true;
                 return;
             }
 
-            // Если после точки уже есть 2 знака, отменяем ввод
-            if (hasDot && ((TextBox)sender).Text.Split('.')[1].Length >= 2)
+            // Если уже есть точка или запятая, обрабатываем ввод цифр только до второго знака после точки или запятой
+            if (hasDotOrComma)
             {
-                e.Handled = true;
-                return;
+                int dotOrCommaIndex = ((TextBox)sender).Text.IndexOfAny(new char[] { '.', ',' });
+                if (dotOrCommaIndex >= 0 && ((TextBox)sender).CaretIndex > dotOrCommaIndex)
+                {
+                    int decimalPlacesCount = ((TextBox)sender).Text.Length - dotOrCommaIndex - 1;
+                    if (decimalPlacesCount >= 2)
+                    {
+                        e.Handled = true;
+                        return;
+                    }
+                }
             }
         }
+
+
+
 
         private void gamesGenreTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
@@ -1269,20 +1283,7 @@ namespace ProjectGameStore
             gamesReport.CreateDocument();
         }
 
-
-
-
-
-
-
-
-        private void ReportViewer_Loaded(object sender, RoutedEventArgs e)
-        {
-          
-        }
-
        
-
         private void purchasesReport_Checked(object sender, RoutedEventArgs e)
         {
             UsersPurchasesReport purchasesReport = new UsersPurchasesReport();
@@ -1353,6 +1354,18 @@ namespace ProjectGameStore
         private void DiagramsTabItem_Loaded(object sender, RoutedEventArgs e)
         {
             ShowGamesComparisonByGenre();
+        }
+
+        private void gamesPriceTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void gamesPriceTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            // Замена запятой на точку
+            TextBox textBox = (TextBox)sender;
+            textBox.Text = textBox.Text.Replace(",", ".");
         }
     }
 }

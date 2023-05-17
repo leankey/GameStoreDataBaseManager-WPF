@@ -287,7 +287,7 @@
     CornerRadius="0"
     Opacity="0.95"
     MouseDown="Window_MouseDown">
-                
+
                 <Border.Background>
                     <LinearGradientBrush>
                         <GradientStop Offset="-0.2" Color="#fafafa"  />
@@ -315,7 +315,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="1*" />
                             <RowDefinition Height="15*" />
-                            
+
                         </Grid.RowDefinitions>
 
                         <Grid.ColumnDefinitions>
@@ -740,7 +740,7 @@
                                         <RowDefinition Height="40" />
                                         <RowDefinition Height="40" />
                                         <RowDefinition Height="40" />
-                                       
+
                                     </Grid.RowDefinitions>
                                     <Label
                                         Grid.Row="0"
@@ -762,7 +762,7 @@
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
                                         Style="{StaticResource TextBoxExtend}"
-                                        Text="{Binding Developer, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+                                       
                                         ToolTip="Разраб" />
                                     <Label
                                         Grid.Row="1"
@@ -786,7 +786,7 @@
                                         IsReadOnly="True"
                                         IsReadOnlyCaretVisible="True"
                                         Style="{StaticResource TextBoxExtend}"
-                                        Text="{Binding GameID, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" />
+                                       />
                                     <Label
                                         Grid.Row="2"
                                         Grid.Column="0"
@@ -808,7 +808,7 @@
                                         VerticalAlignment="Center"
                                         PreviewTextInput="gamesGenreTextBox_PreviewTextInput"
                                         Style="{StaticResource TextBoxExtend}"
-                                        Text="{Binding Genre, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" />
+                                        />
                                     <Label
                                         Grid.Row="3"
                                         Grid.Column="0"
@@ -825,14 +825,12 @@
                                         Grid.Column="1"
                                         Width="165"
                                         Height="NaN"
-                                        Margin="3"
+                                        Margin="3,0,0,6"
                                         HorizontalAlignment="Left"
-                                        VerticalAlignment="Center"
-                                        PreviewKeyDown="gamesPriceTextBox_PreviewKeyDown"
+                                        VerticalAlignment="Bottom"
                                         PreviewTextInput="gamesPriceTextBox_PreviewTextInput"
                                         Style="{StaticResource TextBoxExtend}"
-                                        Text="{Binding Price, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-                                        TextInput="gamesPriceTextBox_TextInput" />
+                                         LostFocus="gamesPriceTextBox_LostFocus" />
                                     <Label
                                         Grid.Row="4"
                                         Grid.Column="0"
@@ -854,7 +852,7 @@
                                         VerticalAlignment="Center"
                                         PreviewTextInput="gamesPublisherTextBox_PreviewTextInput"
                                         Style="{StaticResource TextBoxExtend}"
-                                        Text="{Binding Publisher, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+                                       
                                         TextChanged="gamesPublisherTextBox_TextChanged" />
                                     <Label
                                         Grid.Row="5"
@@ -876,7 +874,7 @@
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
                                         Style="{StaticResource TextBoxExtend}"
-                                        Text="{Binding ReleaseYear, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" />
+                                        />
                                     <Label
                                         Grid.Row="6"
                                         Grid.Column="0"
@@ -898,7 +896,7 @@
                                         VerticalAlignment="Center"
                                         PreviewTextInput="gamesTitleTextBox_PreviewTextInput"
                                         Style="{StaticResource TextBoxExtend}"
-                                        Text="{Binding Title, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" />
+                                       />
                                 </Grid>
                             </Border>
 
@@ -914,7 +912,7 @@
                                     <RowDefinition />
                                     <RowDefinition />
                                     <RowDefinition />
-                                   
+
                                 </Grid.RowDefinitions>
 
                                 <Button
@@ -1001,7 +999,7 @@
                                     Style="{StaticResource CustomButtonStyle}" />
 
 
-                                
+
                             </Grid>
 
 
@@ -1185,19 +1183,19 @@
                                                     Width="150"
                                                     />
                                                 <Label Grid.Row="2" Content="По полю:" Style="{StaticResource MahApps.Styles.Label}" />
-                                               
-                                                    <ComboBox 
+
+                                                <ComboBox 
                                                         Grid.Row="3"
                                                     Grid.Column="1"
                                                         x:Name="searchDBUserFieldsComboBox"
                                                        
                                                         Foreground="Black"
                                                       >
-                                                        <ComboBoxItem Content="ID" />
-                                                        <ComboBoxItem Content="Логин" />
-                                                        <ComboBoxItem Content="Роль" />
-                                                    </ComboBox>
-                                          
+                                                    <ComboBoxItem Content="ID" />
+                                                    <ComboBoxItem Content="Логин" />
+                                                    <ComboBoxItem Content="Роль" />
+                                                </ComboBox>
+
 
                                                 <Button
                                                     x:Name="ApplySearchUserButton"
@@ -1537,7 +1535,7 @@
                         <dxp:DocumentPreviewControl
                             x:Name="ReportViewer"
                             Grid.Row="1"
-                            Loaded="ReportViewer_Loaded" />
+                            />
                     </Grid>
                 </TabItem>
 
@@ -1564,7 +1562,7 @@
                                 FontSize="20"
                                 Height="50" 
                                 Style="{DynamicResource RadioGroupItemSingle}" />
-                           
+
 
                         </hc:ButtonGroup>
 
@@ -1581,9 +1579,9 @@
                         </Border>
 
 
-                        
+
                     </Grid>
-                    
+
                 </TabItem>
 
             </TabControl>
