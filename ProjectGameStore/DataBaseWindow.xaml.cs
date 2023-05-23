@@ -17,7 +17,6 @@ using System.Data.Entity;
 using System.Data.SqlClient;
 using Microsoft.Win32;
 using System.Data;
-using Syncfusion.Linq;
 using DevExpress.Mvvm.Native;
 using ProjectGameStore.Reports;
 using LiveCharts;
